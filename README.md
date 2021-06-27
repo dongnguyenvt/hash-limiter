@@ -15,7 +15,7 @@ func main() {
     // check error
     client := "some client id"
     resource := "some resource id"
-    ok, give := rl.Take(client, resource)
+    give, ok := rl.Take(client, resource)
     if !ok {
         // return 429 here
         os.Exit(1)
