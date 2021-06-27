@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/dongnguyenvt/hash-limiter.svg?branch=main)](https://travis-ci.com/dongnguyenvt/hash-limiter) [![codecov](https://codecov.io/gh/dongnguyenvt/hash-limiter/branch/mail/graph/badge.svg)](https://codecov.io/gh/dongnguyenvt/hash-limiter)
+
 # hash-limiter
 simple lock-free limiter using hash and atomic operations
 
