@@ -1,0 +1,13 @@
+all: build test bench race
+
+build:
+	go build ./...
+
+test:
+	go test -v ./...
+
+bench:
+	go test -v -bench=. ./...
+
+race:
+	go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...

@@ -27,7 +27,7 @@ func TestNewLimiter(t *testing.T) {
 func TestLimiter_Take(t *testing.T) {
 	l, _ := NewLimiter(1024, 10)
 	var cnt int
-	for i := 0; i < 100_000; i++ {
+	for i := 0; i < 100000; i++ {
 		ok, _ := l.Take(babbler.Babble(), babbler.Babble(), babbler.Babble())
 		if !ok {
 			cnt++
@@ -36,7 +36,7 @@ func TestLimiter_Take(t *testing.T) {
 	t.Log(cnt)
 	l, _ = NewLimiter(1024, 10)
 	cnt = 0
-	for i := 0; i < 100_000; i++ {
+	for i := 0; i < 100000; i++ {
 		ok, give := l.Take(babbler.Babble(), babbler.Babble(), babbler.Babble())
 		if !ok {
 			cnt++
