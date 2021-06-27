@@ -50,9 +50,9 @@ func TestLimiter_Take2(t *testing.T) {
 	wg := sync.WaitGroup{}
 	var rejected int32
 	const RUN = 1000
+	wg.Add(RUN)
 	for i := 0; i < RUN; i++ {
 		go func() {
-			wg.Add(1)
 			defer wg.Done()
 			key := randomString()
 			if give, ok := l.Take(key...); ok {
