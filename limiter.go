@@ -10,11 +10,11 @@ import (
 type Give func()
 
 type Limiter interface {
-	Take(key ...string) (ok bool, give Give)
+	Take(key ...string) (give Give, ok bool)
 }
 
 func NewLimiter(bucket, limit int) (Limiter, error) {
-	if limit <= 0 || bucket <= 0 {
+	if bucket <= 0 || limit <= 0 {
 		return nil, errors.New("invalid limit")
 	}
 	return &limiter{
@@ -31,13 +31,13 @@ type limiter struct {
 	limit    int32
 }
 
-func (l *limiter) Take(key ...string) (bool, Give) {
+func (l *limiter) Take(key ...string) (Give, bool) {
 	if len(key) == 0 {
 		if atomic.LoadInt32(&l.counter) > l.limit {
-			return false, nil
+			return nil, false
 		}
 		atomic.AddInt32(&l.counter, 1)
-		return true, func() { atomic.AddInt32(&l.counter, -1) }
+		return func() { atomic.AddInt32(&l.counter, -1) }, true
 	}
 	h := fnv1a.Init32
 	for _, k := range key {
@@ -45,10 +45,10 @@ func (l *limiter) Take(key ...string) (bool, Give) {
 	}
 	i := h % l.bucket
 	if atomic.LoadInt32(&l.counters[i]) > l.limit {
-		return false, nil
+		return nil, false
 	}
 	atomic.AddInt32(&l.counters[i], 1)
-	return true, func() {
+	return func() {
 		atomic.AddInt32(&l.counters[i], -1)
-	}
+	}, true
 }
